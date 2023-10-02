@@ -9,7 +9,7 @@ Awesome !
 
 ### Kustomize patches
 
-Individual patch files
+#### Individual patch files
 
 ```yaml
 # kustomization.yaml
@@ -32,7 +32,7 @@ data:
   applicationsetcontroller.enable.progressive.syncs: "true"
 ```
 
-Directly in the kustomization.yaml file
+#### Directly in the kustomization.yaml file
 
 ```yaml
 # kustomization.yaml
