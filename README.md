@@ -1,6 +1,30 @@
 # Awesomes
 Awesome !
 
+# Bash
+
+Recursively find each directory named '.hooks' inside a git repository, then run every script found in them taking care of not executing itself if the script happens to be in a '.hooks' directory itself.
+
+```bash
+for hookdir in "$(find $(git rev-parse --show-toplevel)/ -name ".hooks" -type d)" ; do
+  for hookscript in $hookdir/*; do
+    if [[ "$(basename ${0})" != "$(basename $hookscript)" ]]; then
+      $hookscript;
+    fi
+  done
+done
+```
+
+Add an annotation with the value: argocd.argoproj.io/sync-wave="VALUE" to each yaml file found in a git repository.
+
+```bash
+for d in "$(git rev-parse --show-toplevel)/*" ; do
+  for FILE in $d/*; do
+    VALUE='"'VALUE'"' yq -i e '.metadata.annotations.["argocd.argoproj.io/sync-wave"] = env(VALUE)' $FILE;
+  done
+done
+```
+
 # Kubernetes
 
 [k8s-bootstrapper](https://github.com/hivenetes/k8s-bootstrapper) Bootstrapping a Production-Ready DigitalOcean Kubernetes Cluster Using Terraform and Argo CD
