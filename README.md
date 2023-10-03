@@ -33,6 +33,8 @@ done
 
 ### Kustomize patches
 
+[Kustomize HelmCharts documentation](https://kubectl.docs.kubernetes.io/references/kustomize/builtins/#field-name-helmcharts)
+
 #### Individual patch files
 
 ```yaml
