@@ -16,6 +16,6 @@ start:
 	exit 0
 
 stop:
-  export KUBECONFIG=$(KUBECONFIG)
+	export KUBECONFIG=$(KUBECONFIG)
 	minikube delete -p $(MINIKUBE_NAME)
 	exit 0
