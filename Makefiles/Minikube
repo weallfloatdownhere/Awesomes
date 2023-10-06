@@ -1,0 +1,21 @@
+#!make
+
+.EXPORT_ALL_VARIABLES:
+
+KUBECONFIG:=${PWD}/minikube.kubeconfig
+MINIKUBE_NAME:=cluster
+MINIKUBE_RAM:=2048
+MINIKUBE_CPUS:=2
+
+start:
+	export KUBECONFIG=$(KUBECONFIG).tmp
+	minikube start -p $(MINIKUBE_NAME) --cpus $(MINIKUBE_CPUS) --memory $(MINIKUBE_RAM) --network bridge
+	kubectl config view --context manager --flatten --minify > $(KUBECONFIG).tmp
+	mv $(KUBECONFIG).tmp $(KUBECONFIG)
+	export KUBECONFIG=$(KUBECONFIG)
+	exit 0
+
+stop:
+  export KUBECONFIG=$(KUBECONFIG)
+	minikube delete -p $(MINIKUBE_NAME)
+	exit 0
