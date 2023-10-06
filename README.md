@@ -3,6 +3,12 @@ Awesome !
 
 # Bash
 
+Quickly test if a string contains a certain word
+
+```bash
+echo http://bitbucket.org | grep github ; echo $?
+```
+
 Recursively find each directory named '.hooks' inside a git repository, then run every script found in them taking care of not executing itself if the script happens to be in a '.hooks' directory itself.
 
 ```bash
