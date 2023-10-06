@@ -1,21 +1,22 @@
 #!make
+include config.env
+export $(shell sed 's/=.*//' config.env)
+
+KUBECONFIG := $(shell git rev-parse --show-toplevel)/minikube.kubeconfig
+TMPCONF := $(shell git rev-parse --show-toplevel)/k.tmp
 
 .EXPORT_ALL_VARIABLES:
 
-KUBECONFIG:=${PWD}/minikube.kubeconfig
-MINIKUBE_NAME:=cluster
-MINIKUBE_RAM:=2048
-MINIKUBE_CPUS:=2
-
 start:
-	export KUBECONFIG=$(KUBECONFIG).tmp
-	minikube start -p $(MINIKUBE_NAME) --cpus $(MINIKUBE_CPUS) --memory $(MINIKUBE_RAM) --network bridge
-	kubectl config view --context $(MINIKUBE_NAME) --flatten --minify > $(KUBECONFIG).tmp
-	mv $(KUBECONFIG).tmp $(KUBECONFIG)
+	export KUBECONFIG=$(TMPCONF)
+	minikube delete -p manager
+	minikube start -p manager --cpus $$MINIKUBE_CPUS --memory $$MINIKUBE_RAM --network bridge
+	kubectl config view --context manager --flatten --minify > $(TMPCONF) 
+	mv $(TMPCONF) $(KUBECONFIG)
 	export KUBECONFIG=$(KUBECONFIG)
 	exit 0
 
 stop:
-	export KUBECONFIG=$(KUBECONFIG)
-	minikube delete -p $(MINIKUBE_NAME)
+	minikube delete --all
+	minikube stop
 	exit 0
