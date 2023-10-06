@@ -10,7 +10,7 @@ MINIKUBE_CPUS:=2
 start:
 	export KUBECONFIG=$(KUBECONFIG).tmp
 	minikube start -p $(MINIKUBE_NAME) --cpus $(MINIKUBE_CPUS) --memory $(MINIKUBE_RAM) --network bridge
-	kubectl config view --context manager --flatten --minify > $(KUBECONFIG).tmp
+	kubectl config view --context $(MINIKUBE_NAME) --flatten --minify > $(KUBECONFIG).tmp
 	mv $(KUBECONFIG).tmp $(KUBECONFIG)
 	export KUBECONFIG=$(KUBECONFIG)
 	exit 0
