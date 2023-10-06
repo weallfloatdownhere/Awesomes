@@ -35,6 +35,26 @@ done
 
 [k8s-bootstrapper](https://github.com/hivenetes/k8s-bootstrapper) Bootstrapping a Production-Ready DigitalOcean Kubernetes Cluster Using Terraform and Argo CD
 
+## Helm
+
+Iterrate throught range
+
+```yaml
+spec:
+  rules:
+  {{- range $key, $value := .Values.global.ingress }}
+  {{- range $value.hosts }}
+  - host: {{ . }}
+    http:
+      paths:
+      - path: /qapi
+        backend:
+          serviceName: api-server
+          servicePort: 80
+  {{- end }}
+  {{- end }}
+```
+
 ## Kustomize
 
 ### Kustomize patches
