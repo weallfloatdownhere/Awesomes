@@ -1,0 +1,9 @@
+clean:
+  - terraform -chdir [module_dir] init
+  - terraform -chdir [module_dir] destroy -auto-approve
+
+install:
+  terraform -chdir [module_dir] init
+  terraform -chdir [module_dir] validate
+  terraform -chdir [module_dir] plan
+  terraform -chdir [module_dir] apply -auto-approve

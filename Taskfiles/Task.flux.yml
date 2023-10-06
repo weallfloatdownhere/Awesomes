@@ -1,0 +1,45 @@
+# https://taskfile.dev
+
+# Use Flux to bootstrap a git repository and the current target Kubernetes cluster.
+# Github repo:
+# $ export KUBECONFIG="/path/to/kubeconfig"
+# $ export GITHUB_TOKEN=ghp_00000000000
+# $ export FLUXDIR=root/dir/example
+# $ task flux:bootstrap
+# https://fluxcd.io/flux/cmd/flux_bootstrap_github
+
+version: "3"
+
+vars:
+  REMORIGIN:
+    sh: git ls-remote --get-url origin
+  REPONAME:
+    sh: git ls-remote --get-url origin | cut -d '/' -f 5 | cut -d '.' -f 1
+  OWNER:
+    sh: git ls-remote --get-url origin | cut -d '/' -f 4
+
+tasks:
+  default:
+    cmds:
+      - task --list-all
+
+  bootstrap:
+    desc: Flux bootstrap and a git repository.
+    cmds:
+      - task: github
+    preconditions:
+      - flux check --pre
+      - test ! -z $KUBECONFIG
+      - test ! -z $FLUXDIR
+
+  github:
+    desc: Flux bootstrap and a git repository.
+    silent: true
+    internal: true
+    cmds:
+      - flux bootstrap github --owner={{.OWNER}} --repository={{.REPONAME}} --path=$FLUXDIR
+    preconditions:
+      - test ! -z $GITHUB_TOKEN
+      - echo {{.REMORIGIN}} | grep github ; echo $?
+    requires:
+      vars: [GITHUB_TOKEN, REPONAME, OWNER]
