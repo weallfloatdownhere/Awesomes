@@ -1,11 +1,11 @@
 variable "kubeconfig" {
   description = "Kubeconfig file to use"
-  default = "~/.kube/config"
+  default = "cluster.kubeconfig"
 }
 
 variable "context" {
   description = "Context to use in the kubeconfig file"
-  default = "default"
+  default = "cluster"
 }
 
 variable "repository" {
@@ -37,10 +37,8 @@ provider "flux" {
   git = {
     url = "https://github.com/${var.username}/${var.repository}.git"
     http = {
-      github_org = var.username
-      github_token = var.token
-      password = var.token
       username = var.username
+      password = var.token
     }
   }
 }
@@ -58,5 +56,6 @@ resource "github_repository_deploy_key" "this" {
 }
 
 resource "flux_bootstrap_git" "this" {
+  depends_on = [github_repository_deploy_key.this]
   path = var.bootstrap_path
 }
