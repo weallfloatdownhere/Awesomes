@@ -1,3 +1,8 @@
+#!make
+
+.PHONY: start stop
+.EXPORT_ALL_VARIABLES: start stop
+
 clean:
   - terraform -chdir [module_dir] init
   - terraform -chdir [module_dir] destroy -auto-approve
