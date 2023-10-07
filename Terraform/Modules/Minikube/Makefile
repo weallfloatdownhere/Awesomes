@@ -16,5 +16,6 @@ clean:
 
 apply:
 	terraform init
-	terraform plan -var-file=$(VARFILE) -var="kubeconfig=$(KUBECONFIG)"
-	terraform apply -var-file=$(VARFILE) -var="kubeconfig=$(KUBECONFIG)" -auto-approve
+	export KUBECONFIG=$(KUBECONFIG)
+	terraform plan -var-file=$(VARFILE)
+	terraform apply -var-file=$(VARFILE) -auto-approve
