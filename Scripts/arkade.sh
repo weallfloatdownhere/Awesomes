@@ -5,21 +5,23 @@
 
 
 ARKADE_DIR="$HOME/.local/bin"
+mkdir -p $ARKADE_DIR
 
 declare -a Tools=("kubectl" 
                   "helm"
+                  "terrafrom"
+                  "terragrunt"
                   )
 
 
-mkdir -p $ARKADE_DIR
+if [ -x "$(command -v arkade)" ]; then 
 curl -sLS https://get.arkade.dev | sudo sh
+fi
+
+
 arkade update
 
-for val in ${Tools[@]}; do
- arkade get $tool --path $ARKADE_DIR
+for tool in ${Tools[@]}; do
+arkade get $tool --path $ARKADE_DIR && \
+chmod +x $ARKADE_DIR/$tool
 done
-
-chmod +x $ARKADE_DIR/*
-
-
-
