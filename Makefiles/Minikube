@@ -1,5 +1,7 @@
 #!make
 
+# Dependencies: virtualbox, docker, kubectl
+
 .PHONY: start stop
 .EXPORT_ALL_VARIABLES: start stop
 
