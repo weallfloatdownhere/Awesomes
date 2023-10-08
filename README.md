@@ -21,6 +21,49 @@ for hookdir in "$(find $(git rev-parse --show-toplevel)/ -name ".hooks" -type d)
 done
 ```
 
+Generate a new admin account for argocd using bash
+
+```bash
+#!/bin/bash
+export TARGET_CTX=k3s-ontario-edge-1
+export ARGOCD_CTX=argo-hub
+
+cat <<EOF | kubectl apply --context $TARGET_CTX -n kube-system  -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: argocd-manager-token
+  namespace: kube-system 
+  annotations:
+    kubernetes.io/service-account.name: argocd-manager
+type: kubernetes.io/service-account-token
+EOF
+
+name="argocd-manager-token"
+token=$(kubectl get --context $TARGET_CTX -n kube-system secret/$name -o jsonpath='{.data.token}' | base64 --decode)
+namespace=$(kubectl get --context $TARGET_CTX -n kube-system secret/$name -o jsonpath='{.data.namespace}' | base64 --decode)
+
+cat <<EOF | kubectl apply --context $ARGOCD_CTX -n argocd -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ontario
+  labels:
+    argocd.argoproj.io/secret-type: cluster
+type: Opaque
+stringData:
+  name: ontario-tunnel-inlets-pro-data-plane
+  server: https://ontario-tunnel-inlets-pro-data-plane:443
+  config: |
+    {
+      "bearerToken": "${token}",
+      "tlsClientConfig": {
+        "serverName": "kubernetes.default.svc"
+      }
+    }
+EOF
+```
+
 Add an annotation with the value: argocd.argoproj.io/sync-wave="VALUE" to each yaml file found in a git repository.
 
 ```bash
