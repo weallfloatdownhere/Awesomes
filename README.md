@@ -128,6 +128,20 @@ valuesFile: values.yaml
 IncludeCRDs: true
 ```
 
+```golang
+func makeHelmChartFromHca(old *HelmChartArgs) (c HelmChart) {
+	c.Name = old.ChartName
+	c.Version = old.ChartVersion
+	c.Repo = old.ChartRepoURL
+	c.ValuesFile = old.Values
+	c.ValuesInline = old.ValuesLocal
+	c.ValuesMerge = old.ValuesMerge
+	c.ReleaseName = old.ReleaseName
+	return
+}
+```
+
+
 ```yaml
 # kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
