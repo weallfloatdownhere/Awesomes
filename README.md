@@ -5,6 +5,8 @@ Awesome !
 
 ## [Providers](https://github.com/topics/terraform-provider)
 
+ - [ArgoCD provider](https://registry.terraform.io/providers/oboukili/argocd/latest/docs)
+
 # Bash
 
 Quickly test if a string contains a certain word
