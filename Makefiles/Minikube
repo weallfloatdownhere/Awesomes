@@ -5,8 +5,8 @@
 .PHONY: start stop
 .EXPORT_ALL_VARIABLES: start stop
 
-KUBECONFIG := ${PWD}/minikube.kubeconfig
 MINIKUBE_NAME := cluster
+KUBECONFIG := ${PWD}/$(MINIKUBE_NAME).kubeconfig
 MINIKUBE_RAM := 2048
 MINIKUBE_CPUS := 2
 
